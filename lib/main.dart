@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasks_rewerd/referral.dart';
 import 'package:tasks_rewerd/taskCard.dart';
 
 void main() {
@@ -207,7 +208,13 @@ class HomePage extends StatelessWidget {
           } else if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const RivalPage()),
+              MaterialPageRoute(
+                  builder: (context) => const ReferralPage(
+                        totalInvited: 0,
+                        pendingAuthentication: 0,
+                        totalPoints: 0,
+                        inviteCode: 'FX4D2',
+                      )),
             );
           }
         },
@@ -242,18 +249,6 @@ class RewardsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Rewards")),
       body: const Center(child: Text("Rewards Page")),
-    );
-  }
-}
-
-class RivalPage extends StatelessWidget {
-  const RivalPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Rival Page")),
-      body: const Center(child: Text("Rival Page")),
     );
   }
 }
