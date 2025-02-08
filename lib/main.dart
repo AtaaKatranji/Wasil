@@ -100,94 +100,26 @@ class HomePage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(16.0),
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //     children: [
-          //       const Text(
-          //         "Your Points:",
-          //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          //       ),
-          //       Chip(
-          //         label: const Text("250"),
-          //         backgroundColor: Colors.blueAccent.withOpacity(0.2),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Container(
-          //   width: 200,
-          //   child: Card(
-          //     margin: const EdgeInsets.all(10),
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(15)),
-          //     child: Padding(
-          //       padding: const EdgeInsets.all(16.0),
-          //       child: Column(
-          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //         children: [
-          //           const Row(
-          //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //             children: [
-          //               Icon(Icons.facebook,
-          //                   color: Color.fromARGB(255, 255, 0, 0), size: 32),
-          //               Text(
-          //                 "+50",
-          //                 style: TextStyle(
-          //                   fontSize: 16,
-          //                   fontWeight: FontWeight.bold,
-          //                   color: false
-          //                       ? Color.fromARGB(255, 255, 0, 0)
-          //                       : Colors.green,
-          //                 ),
-          //               ),
-          //             ],
-          //           ),
-          //           const SizedBox(height: 10),
-          //           const Text(
-          //             "like",
-          //             style:
-          //                 TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          //           ),
-          //           const SizedBox(height: 10),
-          //           Text(
-          //             "like our latest social media post",
-          //             textAlign: TextAlign.center,
-          //             style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-          //           ),
-          //           const SizedBox(height: 20),
-          //           ElevatedButton(
-          //             onPressed: () {},
-          //             child: const Text(true ? "Completed" : "Start"),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Number of columns
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.7,
+                crossAxisCount: 1, // Number of columns
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+                childAspectRatio:
+                    1.5, // Adjust this value to control the height of the cards
               ),
-              padding: const EdgeInsets.all(16),
-              itemCount: 6, // Sample task count
+              padding: const EdgeInsets.all(4),
+              itemCount: tasks.length,
               itemBuilder: (context, index) {
-                // Sample data - replace with your actual data
-                bool isDone = index % 2 == 0;
-                final task = tasks[index]; // Example done state
+                final task = tasks[index];
                 return TaskCard(
                   taskType: task["taskType"],
                   icon: task["icon"],
                   iconColor: task["color"],
                   description: task["description"],
                   points: task["points"],
-                  isDone: false, // Default to not done
+                  isDone: index % 2 == 0, // Default to not done
                   onPressed: () {
                     // Handle task completion here
                   },

@@ -25,109 +25,119 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
-  bool isFlipped = false;
-
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          isFlipped = !isFlipped;
-        });
-      },
-      child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 500),
-        transitionBuilder: (Widget child, Animation<double> animation) {
-          return RotationTransition(
-            turns: Tween(begin: 1.0, end: 0.0).animate(animation),
-            child: child,
-          );
-        },
-        child: isFlipped ? _buildBackCard() : _buildFrontCard(),
-      ),
-    );
-  }
-
-  /// Front Side of the Card
-  Widget _buildFrontCard() {
     return Card(
-      key: const ValueKey(1),
-      margin: const EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(widget.icon, color: widget.iconColor, size: 32),
-                Text(
-                  widget.points,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: widget.isDone ? Colors.red : Colors.green,
-                  ),
+      margin: const EdgeInsets.all(16),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 0, // Remove default elevation
+      shadowColor: Colors.black.withOpacity(0.3), // Shadow color
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                colors: [
+                  widget.iconColor,
+                  widget.iconColor.withOpacity(0.5),
+                  widget.iconColor.withOpacity(0.3),
+                  widget.iconColor.withOpacity(0.5),
+                  widget.iconColor,
+                ],
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.3),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                  offset: Offset(4, 4), // Shadow position
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              widget.taskType,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              widget.description.length > 30
-                  ? "${widget.description.substring(0, 25)}..." // Truncate
-                  : widget.description,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: widget.isDone ? null : widget.onPressed,
-                child: Text(widget.isDone ? "Completed" : "Start"),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(widget.icon, color: widget.iconColor, size: 32),
+                      Text(
+                        widget.points,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: widget.isDone
+                              ? const Color.fromARGB(255, 255, 255, 255)
+                              : const Color.fromARGB(255, 255, 255, 255),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.taskType,
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    widget.description.length > 100
+                        ? "${widget.description.substring(0, 100)}..." // Truncate
+                        : widget.description,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16, color: Colors.grey[800]),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: ElevatedButton(
+                      onPressed: widget.isDone ? null : widget.onPressed,
+                      child: Text(widget.isDone ? "Completed" : "Start"),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  /// Back Side of the Card (Full Description)
-  Widget _buildBackCard() {
-    return Card(
-      key: const ValueKey(2),
-      color: Colors.grey[200],
-      margin: const EdgeInsets.all(10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Full Description",
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+          // Add a "Done" stamp if the task is completed
+          if (widget.isDone)
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Transform.rotate(
+                angle: -0.1, // Slight rotation for a stamp effect
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(0, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 5,
+                        spreadRadius: 1,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    'assets/images/done.png',
+                    color: Colors.white,
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              widget.description,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14),
-            ),
-            const SizedBox(height: 10),
-            const Text("Tap to flip back",
-                style: TextStyle(fontSize: 12, color: Colors.grey)),
-          ],
-        ),
+        ],
       ),
     );
   }
